@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -15,25 +15,19 @@ const films = [
   { title: 'Pulp Fiction', genre: 'Thriller' },
 ]
 
-function FilmList() {
-  return (
-
-    <div>
-      <ul>
-        {films.map((Curfilm, index) => (
-          <li key={index}>{Curfilm.title}</li>
-        ))}
-      </ul>
-    </div>
-
-  )
-
-}
 
 
 function App() {
 
-  const [filmFiltred, setFilmFiltred] = useState ("")
+  const [filmFiltred, setFilmFiltred] = useState("")
+  const [filteredArray, setFilteredArray] = useState(films)
+
+
+  useEffect(() => {
+    const newArray = films.filter((film) => 
+      film.title.toLowerCase().includes(filmFiltred.toLowerCase()));
+     setFilteredArray(newArray);
+  }, [filmFiltred])
 
   return (
     <>
@@ -42,28 +36,34 @@ function App() {
 
 
         <section>
-
-
+          <label>Cerca film</label>
           <input
-            type="text"
+            type="search"
             value={filmFiltred}
-            onChange={(event) => 
+            placeholder='Inserisci Titolo'
+            onChange={(event) =>
               setFilmFiltred(event.target.value)
             } />
-        </section>
 
-        <section>
-          <FilmList />
         </section>
+        <div>
+          <ul>
+            {filteredArray.map((Curfilm, index) => (
+              <li key={index}>{Curfilm.title}</li>
+            ))}
+          </ul>
+        </div>
 
      
 
-    </div >
+
+
+      </div >
 
 
 
 
-    
+
     </>
 
 
